@@ -10,15 +10,11 @@ import requests
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
-
-from agents.city_agents import run_agents   # keep since it's working for you
+from agents.city_agents import run_agents
+import requests
 
 st.set_page_config(page_title="CitySense360", layout="wide")
-
 st.title("🌆 CitySense360 — Smart City AI Dashboard")
-
-API_BASE = "https://citysense360-api.onrender.com"   # <-- your deployed API
-
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "Traffic Prediction",
