@@ -6,14 +6,19 @@ from cctv_detection import run_detection
 from complaint_analyzer import classify_complaint, summarize
 from rag_chatbot import build_index, answer_question
 import sys, os
+import requests
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
-from agents.city_agents import run_agents
-import requests
+
+from agents.city_agents import run_agents   # keep since it's working for you
 
 st.set_page_config(page_title="CitySense360", layout="wide")
 
 st.title("🌆 CitySense360 — Smart City AI Dashboard")
+
+API_BASE = "https://citysense360-api.onrender.com"   # <-- your deployed API
+
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "Traffic Prediction",
@@ -22,6 +27,8 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "City Chatbot"
 ])
 
+
+# ---------------- TRAFFIC PREDICTION ----------------
 with tab1:
     st.header("Traffic Congestion Prediction")
 
@@ -30,18 +37,25 @@ with tab1:
     c1, c2, c3 = st.columns(3)
     v1 = c1.number_input("Count 1", value=30)
     v2 = c2.number_input("Count 2", value=50)
-    v3 = c3.number_input("Count 3", value=70)    
+    v3 = c3.number_input("Count 3", value=70)
 
     if st.button("Predict Congestion Level", key="traffic_api_button"):
-        response = requests.get(
-        "http://127.0.0.1:8000/predict/traffic",
-        params={"v1": v1, "v2": v2, "v3": v3}
-    )
+        try:
+            response = requests.get(
+                f"{API_BASE}/predict/traffic",
+                params={"v1": v1, "v2": v2, "v3": v3},
+                timeout=20
+            )
 
-        result = response.json()["prediction"]
-        st.success(f"Predicted next traffic count: {result} vehicles")
+            result = response.json()["prediction"]
+            st.success(f"Predicted next traffic count: {result} vehicles")
+
+        except Exception as e:
+            st.error("⚠️ Unable to connect to API. Please try again.")
+            st.code(str(e))
 
 
+# ---------------- CCTV DETECTION ----------------
 with tab2:
     st.header("AI CCTV Monitoring")
 
@@ -54,6 +68,8 @@ with tab2:
             output = run_detection(uploaded)
             st.image(output, caption="Detection Output", width=600)
 
+
+# ---------------- COMPLAINT ANALYZER ----------------
 with tab3:
     st.header("Citizen Complaints Analyzer")
 
@@ -67,6 +83,8 @@ with tab3:
         st.write("Summary:")
         st.info(short)
 
+
+# ---------------- CHATBOT (RAG) ----------------
 with tab4:
     st.header("City Information Chatbot (RAG)")
 
@@ -94,14 +112,16 @@ with tab4:
             st.info(reply)
         else:
             st.warning("Please build the knowledge base first.")
-    
-    st.subheader("AI City Operations Agent")
+
+
+# ---------------- AI CITY AGENTS ----------------
+st.subheader("AI City Operations Agent")
 
 task = st.text_input("Describe a city operation task (example: plan garbage collection)")
 
 if st.button("Run AI Agents"):
     plan, data, report = run_agents(task)
-    
+
     st.write("🧭 Plan:")
     st.info(plan)
 

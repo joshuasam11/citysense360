@@ -12,3 +12,5 @@ openai
 fastapi
 uvicorn
 python-dotenv
+requests
+opencv-python
