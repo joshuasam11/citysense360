@@ -43,6 +43,7 @@ with tab1:
                 timeout=20
             )
 
+
             result = response.json()["prediction"]
             st.success(f"Predicted next traffic count: {result} vehicles")
 
