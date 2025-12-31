@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+tensorflow
+torch
+streamlit
+ultralytics
+faiss-cpu
+langchain
+openai
+fastapi
+uvicorn
+python-dotenv
