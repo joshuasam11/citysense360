@@ -74,17 +74,17 @@ The frontend communicates with backend services through REST APIs — enabling m
 ```
 CitySense360/
 │
-├── app/                 # Streamlit dashboard
+├── app/
 │   ├── dashboard.py
 │   ├── traffic_model.py
 │   ├── cctv_detection.py
 │   ├── complaint_analyzer.py
 │   └── rag_chatbot.py
 │
-├── api/                 # FastAPI backend
+├── api/
 │   └── main.py
 │
-├── agents/              # Multi-agent logic
+├── agents/
 │   └── city_agents.py
 │
 ├── Dockerfile
@@ -159,7 +159,7 @@ http://localhost:8000
 
 Your live API URL will look like:
 ```
-https://your-service.onrender.com
+https://citysense360-api.onrender.com/
 ```
 
 ---
@@ -197,4 +197,4 @@ https://your-service.onrender.com
 ## 👨‍💻 Author
 
 **Joshua S**
-**B.E - CSE (AI & Robotics)**
+
