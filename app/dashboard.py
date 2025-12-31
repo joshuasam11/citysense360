@@ -38,7 +38,7 @@ with tab1:
     if st.button("Predict Congestion Level", key="traffic_api_button"):
         try:
             response = requests.get(
-                f"{API_BASE}/predict/traffic",
+                "https://citysense360-api.onrender.com/predict/traffic",
                 params={"v1": v1, "v2": v2, "v3": v3},
                 timeout=20
             )
